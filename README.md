@@ -3,7 +3,7 @@ LEXIS DDI APIs, e.g. for data staging between iRODS and different computing syst
 
 The LEXIS DDI API are implemented in Python Django, separated to five standalone Django applications. Ansible roles are included in the [ansible](ansible) directory in the repo.
 
-# Acknowledgement
+## Acknowledgement
 This code repository is a result of the LEXIS project. The project has received funding from the European Union’s Horizon 2020 research and innovation program under grant agreement 825532.
 
 ## Modules
