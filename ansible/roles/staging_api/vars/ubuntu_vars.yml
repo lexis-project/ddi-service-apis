@@ -1,0 +1,21 @@
+---
+install_packages:
+  - python3
+  - python3-psycopg2
+  - python3-venv
+  - python3-pip
+  - python3-setuptools
+  - python3-pkg-resources
+  - git
+  - uwsgi
+  - uwsgi-emperor
+  - uwsgi-plugin-python3
+  - nginx
+  - unzip
+  - jsonschema
+uwsgi_path: /etc/uwsgi-emperor/vassals/
+uwsgi_user: www-data
+uwsgi_group: www-data
+uwsgi_service: uwsgi-emperor
+
+nginx_path: /etc/nginx/sites-enabled

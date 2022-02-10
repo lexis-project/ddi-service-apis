@@ -1,0 +1,16 @@
+---
+install_packages:
+  - python3
+  - python3-psycopg2
+  - uwsgi
+  - nginx
+  - git
+  - libselinux-python
+  - jsonschema
+
+uwsgi_path: /etc/uwsgi.d
+uwsgi_user: uwsgi
+uwsgi_group: uwsgi
+uwsgi_service: uwsgi
+
+nginx_path: /etc/nginx/conf.d

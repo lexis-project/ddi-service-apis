@@ -1,0 +1,11 @@
+- include: install_debian.yml
+  when: ansible_os_family == 'Debian'
+
+- include: install_redhat.yml
+  when: ansible_os_family == 'RedHat'
+
+- name: Restart uwsgi app
+  file:
+    path: "/etc/uwsgi.d/{{ uwsgi_config }}"
+    state: touch
+  tags: uwsgi

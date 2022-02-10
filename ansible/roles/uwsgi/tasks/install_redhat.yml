@@ -1,0 +1,41 @@
+- name: Install uwsgi and nginx on RedHat
+  yum:
+    pkg:
+      - uwsgi
+      - uwsgi-plugin-common
+      - uwsgi-plugin-python36
+      - nginx
+      - nginx-all-modules
+    update_cache: yes
+
+- name: Create UWSGI run directory
+  file:
+    path: /run/uwsgi
+    state: directory
+    owner: uwsgi
+
+- name: Deploy UWSGI config file
+  template:
+    src: "templates/{{ uwsgi_config }}"
+    dest: "/etc/uwsgi.d/{{ uwsgi_config }}"
+
+- name: Change UWSGI config dir owner
+  file:
+    path: "/etc/uwsgi.d/{{ uwsgi_config }}"
+    owner: uwsgi
+    group: uwsgi
+  notify:
+    - Start uwsgi
+
+- name: Deploy nginx config file
+  template:
+    src: "templates/{{ nginx_config }}"
+    dest: "/etc/nginx/conf.d/{{ nginx_config }}"
+
+- name: Change nginx config owner
+  file:
+    path: "/etc/nginx/conf.d/{{ nginx_config }}"
+    owner: nginx
+    group: nginx
+  notify:
+    - Restart nginx

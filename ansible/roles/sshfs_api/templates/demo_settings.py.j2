@@ -1,0 +1,12 @@
+#irods configuration
+IRODS = {
+  'openid_microservice': '{{ sshfsapi_irods_openid_microservice }}',
+}
+
+SSHFS= {
+       'path': '{{ sshfsapi_mounted_path }}',
+       "userlen": 10,
+       'host': '{{ sshfsapi_host }}',
+       "group": "sftponly",
+       "keydir": '{{ sshfsapi_keydir}}'
+}

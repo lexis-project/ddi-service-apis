@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+<p>
+    email: {{ user.email }}<br/>
+    first_name: {{ user.first_name }}<br/>
+    last_name: {{ user.last_name }}<br/>
+    irods_name: {{user.irods_name}}
+<br/>
+token:<br/>
+{{token}}
+</p>
+<p>Lexis WP3 api to enable SSHFS export of datasets</p>
+<h1>Additional information</h1>
+<p>
+See also <a href="https://openproject.it4i.cz/projects/lexis-data-system/wiki/ddi-meta-data-organisation">WP3 ddi-meta-data-organisation</a><br/>
+</p>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<p>
+    {% if user.is_authenticated %}
+    email: {{ user.email }}<br/>
+    first_name: {{ user.first_name }}<br/>
+    last_name: {{ user.last_name }}<br/>
+    irods_username: {{user.irods_username}}
+</p>
+<h1>Json</h1>
+<pre>
+{{data}}
+</pre>
+
+<h1>Info:</h1> 
+<p>
+{% autoescape off %}{{info}}{% endautoescape %}
+</p>
+    {% endif %}
+
+{% endblock %}

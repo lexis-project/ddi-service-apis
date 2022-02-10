@@ -1,0 +1,49 @@
+- name: Check if venv is already present
+  ansible.builtin.stat:
+    path: "{{ venv_path }}"
+  register: venv_stat
+
+- name: Backup existing virtualenv
+  archive:
+    path: "{{ venv_path }}"
+    dest: "{{ venv_path }}_{{ ansible_date_time.iso8601_basic_short }}.tar.gz"
+  when: venv_stat.stat.exists
+
+- name: Remove existing virtualenv
+  file:
+    path: "{{ venv_path }}"
+    state: absent
+  when: venv_stat.stat.exists
+
+- name: "Copy artifact {{ artifact_name }}"
+  copy:
+    src: "{{ lookup('env','CI_PROJECT_DIR') }}/{{ artifact_path }}"
+    dest: "/tmp/{{ artifact_name }}"
+    force: yes
+
+- name: "Update pip"
+  pip:
+    virtualenv: "{{ venv_path }}"
+    virtualenv_command: "python3 -m venv {{ venv_path }}"
+    name:
+      - pip
+    state: latest
+
+- name: "Change permissions of log directory"
+  file:
+    path: "/opt/{{ package_name }}_venv/lib64/python{{ python_version_minor }}/site-packages/logs"
+    mode: 0777
+    state: directory
+
+- name: "Install artifact {{ artifact_name }} to venv"
+  pip:
+    virtualenv: "{{ venv_path }}"
+    name:
+      - "/tmp/{{ artifact_name }}"
+    extra_args: "--no-cache"
+    state: latest
+
+- name: "Remove {{ artifact_name }}"
+  file:
+    path: "/tmp/{{ artifact_name }}"
+    state: absent

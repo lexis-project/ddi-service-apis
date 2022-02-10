@@ -1,0 +1,17 @@
+- name: Install epel-release
+  yum:
+    pkg:
+      - epel-release
+    update_cache: yes
+
+- name: Install Python 3, postgresql libs on RedHat
+  yum:
+    pkg:
+      - "@development"
+      - python3
+      - python3-pip
+      - python3-devel
+      - postgresql-devel
+      - postgresql-libs
+      - git
+    update_cache: yes

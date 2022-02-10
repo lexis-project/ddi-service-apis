@@ -1,0 +1,37 @@
+- name: Python
+  debug:
+    var: python_version_minor
+
+- name: Deploy nginx, uwsgi and create venv
+  import_role:
+    name: django
+  vars:
+    package_name: encryption_api
+    venv_path: "/opt/{{ package_name }}_venv"
+    artifact_name: encryption_api-0.1.tar.gz
+    artifact_path: "encryption_api/dist/{{ artifact_name }}"
+    migrate_db: false
+    celery_package_name: "{{ package_name }}"
+
+- name: Deploy Encryption API settings.py
+  template:
+    src: templates/settings.py.j2
+    dest: "{{ venv_path }}/lib/python{{ python_version_minor }}/site-packages/encryption_api/settings.py"
+
+- name: Create /etc/staging_api
+  file:
+    path: /etc/staging_api
+    state: directory
+    mode: 0777
+
+- name: "Deploy system.yml from"
+  template:
+    src: system.yml
+    dest: /etc/staging_api/system.yml
+    mode: 0666
+
+- name: "Deploy heappe.json"
+  copy:
+    src: heappe.json
+    dest: /etc/staging_api/heappe.json
+    mode: 0666

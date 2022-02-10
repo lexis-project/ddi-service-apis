@@ -1,0 +1,35 @@
+{
+  "jobCreation":
+          {
+              "jobSpecification": {
+                "Name": "StagingJob",
+                "Project": "Lexis",
+                "WaitingLimit": 0,
+                "ClusterId": 3,
+                "FileTransferMethodId": 2,
+                "Tasks": [
+                  {
+                    "Name": "StagingTask",
+                    "MinCores": 24,
+                    "MaxCores": 24,
+                    "WalltimeLimit": 3600,
+                    "Priority": 4,
+                    "StandardOutputFile": "stdout",
+                    "StandardErrorFile": "stderr",
+                    "ProgressFile": "stdprog",
+                    "LogFile": "stdlog",
+                    "ClusterNodeTypeId": 7,
+                    "CommandTemplateId": 2,
+                    "CpuHyperThreading": false,
+                    "TemplateParameterValues": [
+                      {
+                        "CommandParameterIdentifier": "inputParam",
+                        "ParameterValue": "testStaginh"
+                      }
+                    ]
+                  }
+                ]
+              },
+              "sessionCode": ""
+}
+}

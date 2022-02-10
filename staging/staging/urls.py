@@ -1,0 +1,69 @@
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path(
+        '',
+        views.index,
+        name='index'),
+    path(
+        'stage',
+        views.stage,
+        name='stage'),
+    path(
+        'stage/<path:req_id>',
+        views.check_status,
+        name='check_status'),
+    path(
+        'info',
+        views.get_targets,
+        name='get_targets info'),
+    path(
+        'delete',
+        views.delete_copy,
+        name='delete_copy'),
+    path(
+        'delete/<path:req_id>',
+        views.check_deletion_status,
+        name='check_deletion_status'),
+    path(
+        'replicate',
+        views.replicate,
+        name='replicate'),
+    path(
+        'replicate/<path:req_id>',
+        views.check_replication_status,
+        name='check_replication_status'),
+    path(
+        'pid/assign',
+        views.assign_pid,
+        name='assign_pid'),
+    path(
+        'pid/<path:req_id>',
+        views.check_pid_assignment_status,
+        name='check_pid_assignment_status'),
+    path(
+        'replication/status',
+        views.check_replication,
+        name='check_replication'),
+    path(
+        'data/size',
+        views.get_size,
+        name='get_size'),
+    path(
+        'data/size/<path:req_id>',
+        views.check_size_status,
+        name='check_size_status'),
+    path(
+        'data/flags',
+        views.check_flags,
+        name='check_flags'),
+    path(
+        'duplicate',
+        views.duplicate,
+        name='duplicate'),
+    path(
+        'duplicate/<path:req_id>',
+        views.check_duplication_status,
+        name='check_duplication_status'),
+]

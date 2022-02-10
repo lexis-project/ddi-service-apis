@@ -1,0 +1,15 @@
+[Unit]
+Description=Celery Service
+After=network.target
+
+[Service]
+Type=simple
+User=uwsgi
+Group=uwsgi
+WorkingDirectory={{ venv_path }}
+ExecStart={{ venv_path }}/bin/celery -A {{ celery_package_name }} worker {% if celery_queue is defined %}-Q {{ celery_queue }}{% endif %} -l info -E -n worker_{{ package_name }} {% if celery_beat is defined %}-B -s /tmp/celery-beat{% endif %}
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

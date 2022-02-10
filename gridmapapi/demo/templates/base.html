@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>LEXIS DDI Webservice</title>
+</head>
+  <body>
+    {% if user.is_authenticated %}
+    <form action="{% url 'oidc_logout' %}" method="post" >
+        <p><input type="submit" value="Log out"/>{% csrf_token %}</p></form>
+    <p>
+    <a href="/">Home</a><br/>
+    </p>
+      <p>Current user: {{ user.email }}</p>
+    {% else %}
+      <p>User is not logged in </p>
+      <p>
+      <a href="{% url 'oidc_authentication_init' %}">Login</a>
+      </p>
+    {% endif %}
+
+    {% block content %}{% endblock content %}
+  </body>
+</html>

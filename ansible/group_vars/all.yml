@@ -1,0 +1,270 @@
+###################################
+# LEXIS DDI API Ansible variables #
+###################################
+
+# Has to be set to exact Python version on the target host
+python_version_minor: 3.6
+
+#########################
+# Staging API variables #
+#########################
+
+# DNS of the staging api
+staging_api_nginx_server_name:
+
+# Values for staging/staging_api/settings.py
+# Used through template ansible/roles/staging_api/templates/settings.py.j2
+
+# Django secret key
+stagingapi_secret_key:
+# Allowed hosts list
+stagingapi_allowed_hosts:
+
+# Staging API db credentials
+stagingapi_db_name:
+stagingapi_db_user:
+stagingapi_db_password:
+stagingapi_db_host:
+stagingapi_db_port:
+
+# RabbitMQ broker and results backend URLs, including credentials
+stagingapi_amqp_url: 'amqp://'
+stagingapi_celery_backend: 'db+postgresql://'
+
+# Which queue the staging worker is listening to
+stagingapi_celery_queue:
+
+#######################
+# iRODS API variables #
+#######################
+
+# # DNS of the irods api
+irods_api_nginx_server_name:
+
+# Variables used to generate /etc/irods_api.conf at the target host
+
+# Django secret key
+irods_api_secret_key:
+
+# OpenID Keycloak credentials
+irods_api_oidc_rp_client_id:
+irods_api_oidc_rp_client_secret:
+irods_api_keycloak_realm:
+
+# OpenID redirect and login URLs
+irods_api_login_redirect_url:
+irods_api_login_url:
+irods_api_logout_redirect_url:
+
+# Database credentials
+irods_api_db_name:
+irods_api_db_user:
+irods_api_db_passwd:
+irods_api_db_host:
+irods_api_db_port:
+
+# iRODS Credentials
+# User with pwd has to be "rodsadmin", used to synchronize projects and users
+irods_api_irods_host:
+irods_api_irods_port:
+irods_api_irods_zone:
+irods_api_irods_user:
+irods_api_irods_pwd:
+
+# Django allowd hosts
+irods_api_allowed_hosts:
+
+# Federated iRODS zones
+irods_api_irods_federated: '<zone1>,<zone2>'
+# URL of deployed iRODS token broker https://github.com/lexis-project/auth_microservice
+irods_api_irods_openid_microservice:
+
+# Path config
+
+# Path where files are uploaded using direct upload
+irods_api_staging_path: '/staging-area/upload'
+irods_api_internal_staging_path: '/staging-area/upload'
+
+# Default source and target staging system - references system.yml file
+irods_api_staging_source_system:
+irods_api_staging_target_system:
+irods_api_staging_target_path_base: 'upload'
+
+# URL of staging API
+irods_api_staging_service: 'https://staging'
+irods_api_staging_ssl_verification: True
+irods_api_encryption_service:
+
+# TUS upload settings
+irods_api_tus_destination_dir: '/staging-area/upload'
+irods_api_tus_upload_dir: '/staging-area/tus'
+irods_api_tus_file_name_format: 'random'
+
+# iRODS API OpenID Keycloak credentials - admin is used for AAI sync script
+irods_api_keycloak_service_client:
+irods_api_keycloak_service_secret:
+irods_api_keycloak_admin_url:
+irods_api_keycloak_admin_realm:
+
+# RabbitMQ URL with credentials - used by the Celery AAI sync worker
+irods_api_amqp_broker:
+
+# Celery queue used to schedule sync tasks
+irods_api_celery_queue:
+
+# Celery beat schedule settings
+irods_api_celery_beat_schedule:
+  sync_irods:
+    task: 'demo.tasks.sync_irods'
+    schedule: 480 #seconds
+    options:
+      queue: '{{ irods_api_celery_queue}}'
+
+############################
+# Encryption API variables #
+############################
+
+# system.yml is same for both staging and encryption for now
+encryptionapi_system_file: "{{ stagingapi_system_file }}"
+
+# Encryption API DNS
+encryption_api_nginx_server_name:
+
+# Values for encryption_api/encryption_api/settings.py
+# Used through template ansible/roles/encryption_api/templates/settings.py.j2
+
+# Django secret key and allowed hosts
+encryptionapi_secret_key:
+encryptionapi_allowed_hosts:
+
+# DB crendentials
+encryptionapi_db_name:
+encryptionapi_db_user:
+encryptionapi_db_password:
+encryptionapi_db_host:
+encryptionapi_db_port:
+
+# RabbitMQ URL including credentials for encryption api worker
+encryptionapi_amqp_url:
+
+# Celery results DB backend with credentials
+encryptionapi_celery_backend: 'db+postgresql://'
+
+# ElasticSearch URL for logging
+encryptionapi_elastic_hosts:
+encryptionapi_elastic_index:
+
+# Celery worker settings
+encryptionapi_celery_queue:
+
+#######################
+# SSHFS API variables #
+#######################
+
+# SSHFS API DNS
+sshfs_api_nginx_server_name:
+
+# Values for sshfsapi/demo/settings.py
+# Used through template ansible/roles/sshfs_api/templates/demo_settings.py.j2
+sshfsapi_irods_openid_microservice:
+sshfsapi_mounted_path: '/staging-sshfs'
+sshfsapi_host:
+
+# Values for sshfsapi/moz_test/settings.py
+# Used through template ansible/roles/sshfs_api/templates/moz_test_settings.py.j2
+
+# Django secreat key and allowed hosts
+sshfsapi_secret_key:
+sshfsapi_allowed_hosts:
+
+# OpenID Keycloak credentials
+sshfsapi_oidc_rp_client_id:
+sshfsapi_oidc_rp_client_secret:
+sshfsapi_keycloak_realm:
+
+# OpenID URLs
+sshfsapi_login_redirect_url:
+sshfsapi_login_url:
+sshfsapi_logout_redirect_url:
+
+# DB credentials
+sshfsapi_db_name:
+sshfsapi_db_user:
+sshfsapi_db_password:
+sshfsapi_db_host:
+sshfsapi_db_port:
+
+# Directory where sshfs public SSH keys are stored
+sshfsapi_keydir:
+
+# system.yml file for Staging and Encryption API
+stagingapi_system_file:
+  # Local resources
+  local:
+  local_staging_area:
+  local_zone:
+  local_irods:
+  burst_buffer:
+  burst_buffer_area:
+
+  # Storage resources handled by the staging API with examples
+  systems:
+    resource1_irods:
+      host:
+      base_path:
+      port:
+      zone:
+      location: federation
+      type: iRODS
+
+    resource2_nfs:
+      host:
+      base_path:
+      location:
+      type: NFS
+
+    resource3_sshfs:
+      host:
+      base_path:
+      location:
+      type: SSFS
+
+    resource4_hpc:
+      host:
+      base_path:
+      location:
+      type: HPC
+
+  keycloak:
+    # List of all iRODS broker services deployed
+    microservice:
+
+    # OpenID Credentials for Staging API
+    OIDC_RP_CLIENT_ID:
+    OIDC_RP_CLIENT_SECRET:
+    KEYCLOAK_REALM:
+
+  dss:
+    service:
+    container:
+    expire:
+    token:
+    username:
+    password:
+    validcloud:
+
+  # Default metadata
+  metadata:
+    creator:
+      - LEXIS
+    owner:
+
+    publisher:
+    resourceType: Dataset
+    title: temp datase
+
+  encryption:
+    enc_mod:
+    hash_md:
+    openssl_key_deriv:
+    openssl_path:

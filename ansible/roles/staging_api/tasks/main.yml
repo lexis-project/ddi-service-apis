@@ -1,0 +1,37 @@
+- name: Python
+  debug:
+    var: python_version_minor
+
+- name: Deploy staging api to venv
+  import_role:
+    name: django
+  vars:
+    package_name: staging_api
+    venv_path: "/opt/{{ package_name }}_venv"
+    artifact_name: staging_api-0.1.tar.gz
+    artifact_path: "staging/dist/{{ artifact_name }}"
+    migrate_db: false
+    celery_package_name: "{{ package_name }}"
+
+- name: Deploy Staging API settings.py
+  template:
+    src: templates/settings.py.j2
+    dest: "{{ venv_path }}/lib/python{{ python_version_minor }}/site-packages/staging_api/settings.py"
+
+- name: Create /etc/staging_api
+  file:
+    path: /etc/staging_api
+    state: directory
+    mode: 0777
+
+- name: "Deploy system.yml from variable stagingapi_system_file"
+  template:
+    src: system.yml
+    dest: /etc/staging_api/system.yml
+    mode: 0666
+
+- name: "Deploy heappe.json"
+  copy:
+    src: heappe.json
+    dest: /etc/staging_api/heappe.json
+    mode: 0666

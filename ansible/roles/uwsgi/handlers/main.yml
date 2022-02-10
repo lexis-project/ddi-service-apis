@@ -1,0 +1,25 @@
+- name: Start uwsgi
+  systemd:
+    name: uwsgi
+    state: restarted
+    enabled: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Start uwsgi
+  systemd:
+    name: uwsgi-emperor
+    state: restarted
+    enabled: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Restart nginx
+  systemd:
+    name: nginx
+    state: restarted
+    enabled: yes
+
+- name: Restart uwsgi app
+  file:
+    path: "{{ uwsgi_config }}"
+    state: touch
+  tags: uwsgi

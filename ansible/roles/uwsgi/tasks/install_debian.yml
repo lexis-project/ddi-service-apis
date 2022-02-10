@@ -1,0 +1,32 @@
+- name: Install Python 3, uwsgi, nginx on Debian
+  apt:
+    name:
+      - uwsgi
+      - uwsgi-emperor
+      - uwsgi-plugin-python3
+      - nginx-full
+    update_cache: yes
+
+- name: Deploy UWSGI config file
+  template:
+    src: "templates/{{ uwsgi_config }}"
+    dest: "/etc/uwsgi-emperor/vassals/{{ uwsgi_config }}"
+
+- name: Change UWSGI config dir owner
+  file:
+    path: "/etc/uwsgi-emperor/vassals/{{ uwsgi_config }}"
+    owner: www-data
+    group: www-data
+
+- name: Deploy nginx config file
+  template:
+    src: "templates/{{ nginx_config }}"
+    dest: "/etc/nginx/conf.d/{{ nginx_config }}"
+
+- name: Change nginx config owner
+  file:
+    path: "/etc/nginx/conf.d/{{ nginx_config }}"
+    owner: www-data
+    group: www-data
+  notify:
+    - Restart nginx

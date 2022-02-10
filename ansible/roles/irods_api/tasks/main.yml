@@ -1,0 +1,40 @@
+- name: Python
+  debug:
+    var: python_version_minor
+
+- name: Deploy iRODS API to virtualenv
+  import_role:
+    name: django
+  vars:
+    package_name: irods_api
+    venv_path: "/opt/{{ package_name }}_venv"
+    artifact_name: irods_api-0.1.tar.gz
+    artifact_path: "irodsapi/dist/{{ artifact_name }}"
+    settings_module: "moz_test.settings"
+    celery_package_name: moz_test
+
+- name: Deploy iRODS API settings.py
+  template:
+    src: templates/settings.py.j2
+    dest: "{{ venv_path }}/lib/python{{ python_version_minor }}/site-packages/moz_test/settings.py"
+
+- name: Change owner of log directory
+  file:
+    dest: "{{ venv_path }}/lib/python{{ python_version_minor }}/site-packages/logs"
+    owner: uwsgi
+    group: uwsgi
+    state: directory
+    recurse: yes
+  when: uwsgi_config is defined
+
+- name: Deploy iRODS API config file
+  template:
+    src: templates/irods_api.conf.j2
+    dest: /etc/irods_api.conf
+
+- name: Create logfile
+  file:
+    path: /var/log/irods_api.log
+    state: touch
+    mode: 0666
+

@@ -1,0 +1,134 @@
+local: lrz
+local_staging_area: lrz_staging_area
+local_zone: /LRZLexisZone/
+local_irods: lrz_iRODS
+burst_buffer: lrz_bb
+burst_buffer_area: lrz_staging_area2
+systems:
+  lrz_iRODS:
+    host: "lexis-lb-1.srv.lrz.de"
+    base_path: "/LRZLexisZone/"
+    port: 1247
+    zone: "LRZLexisZone"
+    location: federation
+    type: iRODS
+
+  lrz_staging_area:
+    host: "lexis-lrzdata-steering.srv.lrz.de"
+    base_path: "/srv/irods_staging/DDIStaging/"
+    location: lrz
+    type: NFS
+
+  lrz_staging_area2:
+    host: "lexis-lrzdata-steering.srv.lrz.de"
+    base_path: "/srv/staging_area/burst_buffer/"
+    location: lrz
+    type: NFS
+
+  lrz_cloud:
+    host: "lexis-lrzdata-steering.srv.lrz.de"
+    base_path: "/srv/irods_staging/computeCloud/"
+    location: lrz
+    type: NFS
+
+  linux_cluster:
+    host: "lexis-lrzdata-steering.srv.lrz.de"
+    base_path: "/srv/irods_staging/linux_cluster/"
+    location: lrz
+    type: NFS
+
+  superMUC:
+    host: "lexis-lrzdata-steering.srv.lrz.de"
+    base_path: "/srv/irods_staging/superMUC/"
+    location: lrz
+    type: SSFS
+
+  it4i_iRODS:
+    host: "lexis-lb-1.srv.lrz.de"
+    base_path: "/IT4ILexisZone/"
+    port: 1247
+    zone: "LRZLexisZone"
+    location: federation
+    type: iRODS
+
+  barbora_lustre:
+    host: "gw1.msad.it4i.lexis.tech"
+    base_path: "/barbora-scratch"
+    location: it4i
+    type: HPC
+
+  salomon_lustre:
+    host: "gw1.msad.it4i.lexis.tech"
+    base_path: "/salomon-scratch"
+    location: it4i
+    type: HPC
+
+  barbora_home:
+    host: "gw1.msad.it4i.lexis.tech"
+    base_path: "/barbora-home"
+    location: it4i
+    type: HPC
+ 
+  salomon_home:
+    host: "gw1.msad.it4i.lexis.tech"
+    base_path: "/salomon-home"
+    location: it4i
+    type: HPC
+
+  it4i_cloud:
+    host: "gw1.msad.it4i.lexis.tech"
+    base_path: "/staging-area/"
+    location: it4i
+    type: NFS
+
+  it4i_staging_area:
+    host: "gw1.msad.it4i.lexis.tech"
+    base_path: "/staging-area/"
+    location: it4i
+    type: NFS
+
+  surf_iRODS:
+    host: "lexis-lb-1.srv.lrz.de"
+    base_path: "/vzSARA2/"
+    port: 1247
+    zone: "vzSARA2"
+    location: federation
+    type: iRODS
+
+  sara_staging_area:
+    host: "sara.staging"
+    base_path: "/staging-area"
+    location: sara
+    type: NFS
+
+keycloak:
+  microservice: "https://irods-auth.srv.lrz.de"
+  OIDC_RP_CLIENT_ID: "LEXIS_DDI_STAGING_API"
+  OIDC_RP_CLIENT_SECRET: "e2233597-2684-4b05-8312-4e74348835f2"
+  KEYCLOAK_REALM: "https://aai.lexis.tech/auth/realms/LEXIS_AAI"
+
+dss:
+  service: "https://dssweb.dss.lrz.de/api/v1/"
+  container: "http://dssweb.dss.lrz.de/api/v1/dssdatacontainers/294/" 
+  expire: "2021-05-31"
+  token: "******************************"
+  username: "di76gum"
+  password: "***************"
+  validcloud: ["10.195.0.0/20", "138.246.232.0/22"]
+
+metadata:
+  creator:
+  - LEXIS
+  - LRZ
+  owner:
+  - LRZ
+  publisher:
+  - LRZ
+  resourceType: Dataset
+  title: temp datase
+
+encryption:
+  enc_mod: "aes-256-ctr"
+  hash_md: "sha256"
+  openssl_key_deriv: "-pbkdf2 -iter 1000"
+  openssl_path: "/opt/openssl-1.1.1k-build/bin/"

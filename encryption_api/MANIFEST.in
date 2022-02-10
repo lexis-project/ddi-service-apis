@@ -1,0 +1,6 @@
+include README.md
+include requirements.txt
+include encryption/key.raw
+include encryption/system.yml
+include encryption/test.key
+

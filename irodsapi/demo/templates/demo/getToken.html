@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+    <p>Access token:</p>
+    <p>
+    {{token}}
+	<br/>
+	<br/>
+	&nbsp;
+    </p>
+    <pre>{{ decoded | pprint }}</pre>
+    <p>Introspect:</p>
+    <pre>{{introspect | pprint }}</pre>
+    <p>Exchanged Token:</p>
+    <p>{{exchanged}}</p>
+    <p>User Info:</p>
+    <pre>{{userinfo| pprint }}</pre>
+    <p>Offline token:</p>
+
+    <p>TODO</p>
+    {% endif %}
+{% endblock %}

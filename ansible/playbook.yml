@@ -1,0 +1,101 @@
+---
+- name: Deploy staging worker
+  hosts:
+    - staging-worker
+  become: yes
+  roles:
+    - staging_api
+    - celery
+  vars:
+    celery_queue: "{{ stagingapi_celery_queue }}"
+  vars_files:
+    - inventory/vault
+  tags: staging_worker
+  
+- name: Deploy staging API
+  hosts:
+    - staging-api
+  become: yes
+  roles:
+    - staging_api
+    - uwsgi
+  vars:
+    uwsgi_config: staging_uwsgi.ini
+    nginx_config: staging_nginx.conf
+  vars_files:
+    - inventory/vault
+  tags: staging_api
+    
+- name: Deploy encryption worker
+  hosts:
+    - encryption-worker
+  become: yes
+  roles:
+    - encryption_api
+    - celery
+  vars:
+    celery_queue: "{{ encryptionapi_celery_queue }}"
+  vars_files:
+    - inventory/vault
+  tags: encryption_worker
+  
+- name: Deploy encryption API
+  hosts:
+    - encryption-api
+  become: yes
+  roles:
+    - encryption_api
+    - uwsgi
+  vars:
+    uwsgi_config: encryption_uwsgi.ini
+    nginx_config: encryption_nginx.conf
+  vars_files:
+    - inventory/vault
+  tags: encryption_api
+
+- name: Deploy iRODS API
+  hosts:
+    - irods-api
+  become: yes
+  roles:
+    - irods_api
+    - uwsgi
+    - celery
+  vars:
+    uwsgi_config: irods_uwsgi.ini
+    nginx_config: irods_nginx.conf
+    migrate_db: yes
+    celery_beat: yes
+    celery_queue: "{{ irods_api_celery_queue }}"
+  vars_files:
+    - inventory/vault
+  tags: irods_api
+
+- name: Deploy iRODS API Worker only
+  hosts:
+    - irods-api-worker
+  become: yes
+  roles:
+    - irods_api
+    - celery
+  vars:
+    celery_beat: yes
+    celery_queue: "{{ irods_api_celery_queue }}"
+    migrate_db: no
+  vars_files:
+    - inventory/vault
+  tags: irods_api_worker
+
+- name: Deploy SSHFS API
+  hosts:
+    - sshfs-api
+  become: yes
+  roles:
+    - sshfs_api
+    - uwsgi
+  vars:
+    uwsgi_config: sshfsapi_uwsgi.ini
+    nginx_config: sshfsapi_nginx.conf
+  vars_files:
+    - inventory/vault
+  tags: sshfs_api

@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+<p>
+    email: {{ user.email }}<br/>
+    first_name: {{ user.first_name }}<br/>
+    last_name: {{ user.last_name }}<br/>
+    irods_name: {{user.irods_name}}
+<br/>
+<a href="{% url 'getToken'  %}">GetToken</a><br/>
+<a href="{% url 'validateToken'  %}">ValidateToken</a><br/>
+</p>
+<p>
+If your organization uses GridFTP, you can request that LEXIS is recognized within your GridFTP
+by the use of the following
+<a href="{% url 'cert' %}">public certificate</a>.
+</p>
+<p>
+<a href="{% url 'globus' %}">Request globus transfer</a>
+</p>
+<h1>Initial setup of DDI for administrator</h1>
+<p>
+<a href="{% url 'initializeIrods' %}">Initialize Backend</a><br/>
+</p>
+<h1>Additional information</h1>
+<p>
+See also <a href="https://openproject.it4i.cz/projects/lexis-data-system/wiki/ddi-meta-data-organisation">WP3 ddi-meta-data-organisation</a><br/>
+<a href="https://code.it4i.cz/lexis/wp8/wp8-architecture/blob/master/data-service/data-service-swagger-definition.yaml">Swagger</a><br/>
+<a href="https://code.it4i.cz/lexis/wp8/dataset-management-interface/blob/master/data-service-swagger-definition.yaml">New Swagger with search</a><br/>
+<a href="https://code.it4i.cz/lexis/wp8/dataset-management-interface/-/blob/connect_to_wp3_api/swagger.yaml">Current swagger</a><br/>
+<a href="https://www.urlencoder.org/">Url encoder</a><br/>
+</p>
+    {% endif %}
+{% endblock %}

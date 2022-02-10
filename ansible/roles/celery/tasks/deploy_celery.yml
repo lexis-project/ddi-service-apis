@@ -1,0 +1,11 @@
+- name: Install celery worker systemd unit
+  template:
+    src: templates/celery.service.j2
+    dest: /etc/systemd/system/celery_{{ package_name }}.service
+
+- name: Restart celery
+  systemd:
+    name: celery_{{ package_name }}
+    state: restarted
+    enabled: yes
+    daemon_reload: yes

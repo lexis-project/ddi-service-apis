@@ -1,0 +1,57 @@
+- name: Python
+  debug:
+    var: python_version_minor
+
+- name: Deploy SSHFS API to virtualenv
+  import_role:
+    name: django
+  vars:
+    package_name: sshfs_api
+    venv_path: "/opt/{{ package_name }}_venv"
+    artifact_name: sshfs_api-0.1.tar.gz
+    artifact_path: "sshfsapi/dist/{{ artifact_name }}"
+    migrate_db: false
+
+- name: Deploy SSHFS API moz_test settings.py
+  template:
+    src: templates/moztest_settings.py.j2
+    dest: "{{ venv_path }}/lib/python{{ python_version_minor }}/site-packages/moz_test/settings.py"
+
+- name: Deploy SSHFS API demo settings.py
+  template:
+    src: templates/demo_settings.py.j2
+    dest: "{{ venv_path }}/lib/python{{ python_version_minor }}/site-packages/demo/settings.py"
+
+- name: Create logfile
+  file:
+    path: /var/log/sshfs_api.log
+    state: touch
+    mode: 0666
+
+- name: Create ssh public key directory
+  file:
+    path: "{{ sshfsapi_keydir }}"
+    state: directory
+    mode: 0777
+
+- name: Ensure group "sftponly" exists
+  ansible.builtin.group:
+    name: sftponly
+    state: present
+
+- name: Add sftponly group configuration in sshd_config
+  blockinfile:
+    path: /etc/ssh/sshd_config
+    marker_begin: "BEGIN sshfs-api"
+    marker_end: "END sshfs-api"
+    block: |
+      Match Group sftponly
+              X11Forwarding no
+              AllowTcpForwarding no
+              PermitTTY no
+              ChrootDirectory %h
+              ForceCommand internal-sftp
+              AuthorizedKeysCommandUser root
+              AuthorizedKeysCommand /bin/cat "{{ sshfsapi_keydir }}/%u"
+  notify: Restart sshd
+
