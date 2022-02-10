@@ -6,7 +6,7 @@ The LEXIS DDI API are implemented in Python Django, separated to five standalone
 ## Acknowledgement
 This code repository is a result of the LEXIS project. The project has received funding from the European Union’s Horizon 2020 research and innovation program under grant agreement 825532.
 
-## Modules
+## Components
 The DDI uses modified iRODS client for Python forked here: [https://github.com/lexis-project/python-irodsclient](https://github.com/lexis-project/python-irodsclient).
 
 ### iRODS API
