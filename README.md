@@ -1,4 +1,7 @@
 # ddi-service-apis
+
+<a href="https://doi.org/10.5281/zenodo.6046596"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.6046596.svg" alt="DOI"></a>
+
 LEXIS DDI APIs, e.g. for data staging between iRODS and different computing systems.
 
 The LEXIS DDI API are implemented in Python Django, separated to five standalone Django applications. Ansible roles are included in the [ansible](ansible) directory in the repo.
